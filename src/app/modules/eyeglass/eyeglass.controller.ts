@@ -7,12 +7,8 @@ import httpStatus from 'http-status';
 const createEyeglass = catchAsync(async (req: Request, res: Response) => {
   const eyeglass = req.body;
   const user = req.user;
-  const filePath = req?.file?.path as string;
-  const result = await EyeglassServices.createEyeglassIntoDB(
-    filePath,
-    user,
-    eyeglass,
-  );
+
+  const result = await EyeglassServices.createEyeglassIntoDB(user, eyeglass);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -49,13 +45,8 @@ const getSingleEyeglass = catchAsync(async (req: Request, res: Response) => {
 const updateEyeglass = catchAsync(async (req: Request, res: Response) => {
   const id = req.params.id;
   const data = req.body;
-  const filePath = req?.file?.path as string;
 
-  const result = await EyeglassServices.updateEyeglassIntoDB(
-    id,
-    filePath,
-    data,
-  );
+  const result = await EyeglassServices.updateEyeglassIntoDB(id, data);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

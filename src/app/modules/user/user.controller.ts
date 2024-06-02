@@ -31,9 +31,8 @@ const getMe = catchAsync(async (req: Request, res: Response) => {
 const updateMyProfile = catchAsync(async (req: Request, res: Response) => {
   const user = req.user;
   const data = req.body;
-  const filePath = req?.file?.path as string;
 
-  const result = await UserServices.updateMyProfileIntoDB(user, filePath, data);
+  const result = await UserServices.updateMyProfileIntoDB(user, data);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

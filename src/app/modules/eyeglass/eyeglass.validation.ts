@@ -3,6 +3,7 @@ import { z } from 'zod';
 const eyeglassValidationSchema = z.object({
   body: z.object({
     name: z.string(),
+    image: z.string(),
     price: z.number().positive(),
     brand: z.string(),
     quantity: z.number().int().positive(),
@@ -21,6 +22,7 @@ const eyeglassValidationSchema = z.object({
 const updateEyeglassValidationSchema = z.object({
   body: z.object({
     name: z.string().optional(),
+    image: z.string().optional(),
     price: z.number().positive().optional(),
     brand: z.string().optional(),
     quantity: z.number().int().positive().optional(),

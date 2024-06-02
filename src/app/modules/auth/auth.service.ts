@@ -4,20 +4,26 @@ import AppError from '../../errors/AppError';
 import { User } from '../user/user.model';
 import { TUserLogin } from './auth.interface';
 import { createToken } from './auth.utils';
+import bcrypt from 'bcrypt';
 
 const userLogin = async (payload: TUserLogin) => {
   const user = await User.findOne({
     email: payload.email,
-  });
+    isDeleted: false,
+  }).select('+password');
 
-  // if user not found
+  //if user not found
   if (!user) {
-    throw new AppError(httpStatus.NOT_FOUND, 'User not found');
+    throw new AppError(httpStatus.NOT_FOUND, 'Invalid Email');
   }
 
-  // if user deleted
-  if (user.isDeleted) {
-    throw new AppError(httpStatus.NOT_FOUND, 'User is already deleted');
+  //check password is valid
+  const isCorrectPassword: boolean = await bcrypt.compare(
+    payload.password,
+    user.password,
+  );
+  if (!isCorrectPassword) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Wrong password!');
   }
 
   //create access token and refresh token

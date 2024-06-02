@@ -4,9 +4,6 @@ import validateRequest from '../../middlewares/validateRequest';
 import { UserValidations } from './user.validation';
 import auth from '../../middlewares/auth';
 import { USER_ROLE } from './user.constant';
-import { upload } from '../../utils/sendImageToCloudinary';
-import JsonParser from '../../middlewares/JsonParser';
-
 const router = Router();
 
 router.post(
@@ -24,8 +21,6 @@ router.get(
 router.patch(
   '/update-my-profile',
   auth(USER_ROLE.Manager, USER_ROLE.User),
-  upload.single('file'),
-  JsonParser,
   validateRequest(UserValidations.updateUserValidationSchema),
   UserControllers.updateMyProfile,
 );

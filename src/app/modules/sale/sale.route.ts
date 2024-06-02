@@ -12,7 +12,7 @@ router.post(
 );
 router.get(
   '/',
-  // auth(USER_ROLE.Manager, USER_ROLE.User),
+  auth(USER_ROLE.Manager, USER_ROLE.User),
   SaleControllers.getAllSales,
 );
 

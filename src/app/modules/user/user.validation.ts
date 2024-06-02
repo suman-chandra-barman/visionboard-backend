@@ -30,6 +30,7 @@ const updateUserValidationSchema = z.object({
     age: z.number().int().positive().optional(),
     address: z.string().optional(),
     contactNo: z.string().optional(),
+    profileImage: z.string().optional(),
   }),
 });
 

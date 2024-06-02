@@ -4,23 +4,14 @@ import AppError from '../../errors/AppError';
 import { TEyeglass } from './eyeglass.interface';
 import { Eyeglass } from './eyeglass.model';
 import { JwtPayload } from 'jsonwebtoken';
-import { sendImageToCloudinary } from '../../utils/sendImageToCloudinary';
 import { eyeglassSearchableFields } from './eyeglass.constant';
 
 const createEyeglassIntoDB = async (
-  filePath: string,
   userInfo: JwtPayload,
   payload: TEyeglass,
 ) => {
   //set user
   payload.user = userInfo.userId;
-
-  //set eyeglass image using cloudinary
-  if (filePath) {
-    const imageName = `${payload.brand}_${payload?.name}`;
-    const imgFile: any = await sendImageToCloudinary(imageName, filePath);
-    payload.image = imgFile?.secure_url;
-  }
 
   const result = await Eyeglass.create(payload);
   return result;
@@ -31,7 +22,7 @@ const getAllEyeglassesFromDB = async (
   userInfo: JwtPayload,
 ) => {
   const eyeglassQuery = new QueryBuilder(
-    Eyeglass.find({ isDeleted: false }),
+    Eyeglass.find({ isDeleted: false }).sort({ createdAt: -1 }),
     query,
   )
     .getByUserRole(userInfo)
@@ -56,16 +47,8 @@ const getSingleEyeglassFromDB = async (id: string) => {
 
 const updateEyeglassIntoDB = async (
   id: string,
-  filePath: string,
   payload: Partial<TEyeglass>,
 ) => {
-  //set eyeglass image using cloudinary
-  if (filePath) {
-    const imageName = `${payload.brand}_${payload?.name}`;
-    const imgFile: any = await sendImageToCloudinary(imageName, filePath);
-    payload.image = imgFile?.secure_url;
-  }
-
   const result = await Eyeglass.findOneAndUpdate(
     { _id: id, isDeleted: false },
     payload,

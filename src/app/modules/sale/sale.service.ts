@@ -71,7 +71,9 @@ const getAllSalesFromDB = async (query: Record<string, unknown>) => {
 
   const products = await Sale.find({
     date: { $gte: earliestDate },
-  }).populate('productId');
+  })
+    .sort({ createdAt: -1 })
+    .populate('productId');
 
   return products;
 };

@@ -9,10 +9,9 @@ const app: Application = express();
 
 //parsers
 app.use(express.json());
-
 app.use(
   cors({
-    origin: ['https://lenshub.vercel.app', 'http://localhost:5173'],
+    origin: ['http://localhost:5173', 'https://lenshub.vercel.app'],
     credentials: true,
   }),
 );
@@ -23,7 +22,7 @@ app.use('/api/v1', router);
 app.get('/', (req: Request, res: Response) => {
   res.status(httpStatus.OK).send({
     success: true,
-    message: 'Lenshub server is running...',
+    message: 'LenHub server is running...',
   });
 });
 

@@ -3,11 +3,18 @@ import config from '../../config';
 import { TUser } from './user.interface';
 import { User } from './user.model';
 import bcrypt from 'bcrypt';
-import { sendImageToCloudinary } from '../../utils/sendImageToCloudinary';
 import AppError from '../../errors/AppError';
 import httpStatus from 'http-status';
 
 const createUserIntoDB = async (payload: TUser) => {
+  //check email is exists
+  const isExistEmail = await User.findOne({
+    email: payload.email,
+  });
+  if (isExistEmail) {
+    throw new AppError(httpStatus.BAD_REQUEST, 'This Email is already exists!');
+  }
+
   //hash password
   const hashPassword = await bcrypt.hash(
     payload.password,
@@ -30,7 +37,6 @@ const getMeFromDB = async (email: string) => {
 
 const updateMyProfileIntoDB = async (
   user: JwtPayload,
-  filePath: string,
   payload: Partial<TUser>,
 ) => {
   const { name, ...remainingData } = payload;
@@ -42,13 +48,6 @@ const updateMyProfileIntoDB = async (
     for (const [keys, values] of Object.entries(name)) {
       modifiedUpdatedData[`name.${keys}`] = values;
     }
-  }
-
-  //set user image using cloudinary
-  if (filePath) {
-    const imageName = `${payload.name}_${payload?.role}`;
-    const imgFile: any = await sendImageToCloudinary(imageName, filePath);
-    modifiedUpdatedData.profileImage = imgFile?.secure_url;
   }
 
   const result = await User.findOneAndUpdate(
