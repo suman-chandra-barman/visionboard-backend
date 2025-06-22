@@ -16,6 +16,23 @@ const createUser = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getAllUsers = async (req: Request, res: Response) => {
+  try {
+    const result = await UserServices.getAllUsersFromDB();
+
+    res.status(200).json({
+      success: true,
+      message: 'Users are retrieved successfully',
+      data: result,
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: 'Failed to retrieved users',
+    });
+  }
+};
+
 const getMe = catchAsync(async (req: Request, res: Response) => {
   const { email } = req.user;
   const result = await UserServices.getMeFromDB(email);
@@ -37,13 +54,14 @@ const updateMyProfile = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'My profile updated successfully',
+    message: 'Profile updated successfully',
     data: result,
   });
 });
 
 export const UserControllers = {
   createUser,
+  getAllUsers,
   getMe,
   updateMyProfile,
 };

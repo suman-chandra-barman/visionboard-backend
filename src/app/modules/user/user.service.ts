@@ -30,6 +30,13 @@ const createUserIntoDB = async (payload: TUser) => {
   return withOutPassword;
 };
 
+const getAllUsersFromDB = async () => {
+  const result = await User.find({ isDeleted: false }).select(
+    '-password -__v -createdAt -updatedAt',
+  );
+  return result;
+}
+
 const getMeFromDB = async (email: string) => {
   const result = await User.findOne({ email });
   return result;
@@ -68,6 +75,7 @@ const updateMyProfileIntoDB = async (
 
 export const UserServices = {
   createUserIntoDB,
+  getAllUsersFromDB,
   getMeFromDB,
   updateMyProfileIntoDB,
 };

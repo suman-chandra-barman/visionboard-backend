@@ -11,6 +11,11 @@ router.post(
   validateRequest(UserValidations.userValidationSchema),
   UserControllers.createUser,
 );
+router.get(
+  '/',
+  auth(USER_ROLE.Manager),
+  UserControllers.getAllUsers,
+);
 
 router.get(
   '/me',

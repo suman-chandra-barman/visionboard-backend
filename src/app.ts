@@ -22,7 +22,7 @@ app.use('/api/v1', router);
 app.get('/', (req: Request, res: Response) => {
   res.status(httpStatus.OK).send({
     success: true,
-    message: 'LenHub server is running...',
+    message: 'VisionBoard server is running...',
   });
 });
 
