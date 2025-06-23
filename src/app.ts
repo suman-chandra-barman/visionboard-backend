@@ -11,7 +11,7 @@ const app: Application = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: ['http://localhost:5173', 'https://lenshub.vercel.app'],
+    origin: ['http://localhost:5173', 'https://visionboard24.vercel.app'],
     credentials: true,
   }),
 );
