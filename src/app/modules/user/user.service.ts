@@ -23,9 +23,9 @@ const createUserIntoDB = async (payload: TUser) => {
   if (hashPassword) {
     payload.password = hashPassword;
   }
-
   //create user
   const result = await User.create(payload);
+  
   const { password, ...withOutPassword } = result.toJSON();
   return withOutPassword;
 };
