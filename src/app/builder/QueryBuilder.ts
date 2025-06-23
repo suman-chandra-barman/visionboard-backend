@@ -12,7 +12,7 @@ class QueryBuilder<T> {
   }
 
   getByUserRole(user: JwtPayload) {
-    if (user?.role === USER_ROLE.User) {
+    if (user?.role === USER_ROLE.Manager) {
       this.modelQuery = this.modelQuery.find({
         user: user?.userId,
       });

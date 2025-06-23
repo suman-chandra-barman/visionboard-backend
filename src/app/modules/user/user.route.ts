@@ -13,7 +13,7 @@ router.post(
 );
 router.get(
   '/',
-  auth(USER_ROLE.Manager),
+  auth(USER_ROLE.Manager, USER_ROLE.User),
   UserControllers.getAllUsers,
 );
 
